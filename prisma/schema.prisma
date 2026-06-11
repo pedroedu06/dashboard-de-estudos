@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Subject {
+  id        String    @id @default(cuid())
+  name      String
+  color     String
+  createdAt DateTime  @default(now())
+  sessions  Session[]
+}
+
+model Session {
+  id              String   @id @default(cuid())
+  subjectId       String
+  subject         Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  type            String
+  durationSeconds Int
+  startedAt       DateTime
+  endedAt         DateTime
+  createdAt       DateTime @default(now())
+}
